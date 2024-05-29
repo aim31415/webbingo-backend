@@ -1,0 +1,40 @@
+services:
+  webbingo-backend:
+    container_name: webbingo-backend
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: development
+    volumes:
+      - .:/usr/src/app
+    image: webbingo-backend:development
+    ports:
+      - "8080:8080"
+    networks:
+      - default
+    env_file:
+      - .env
+    depends_on:
+      webbingo-database:
+        condition: service_healthy
+  webbingo-database:
+    container_name: webbingo-database
+    image: mariadb
+    restart: always
+    volumes:
+      - ./db:/var/lib/mysql
+    environment:
+      MARIADB_DATABASE: webbingo
+      MARIADB_ROOT_PASSWORD: DSGCu16zFBKAX9mq5EhbILtk2l4f7sPQ30raOoMJ8W
+    ports:
+      - "3306:3306"
+    healthcheck:
+      test: [ "CMD", "healthcheck.sh", "--innodb_initialized" ]
+      start_period: 1m
+      start_interval: 10s
+      interval: 1m
+      timeout: 5s
+      retries: 3
+networks:
+  default:
+    driver: bridge
