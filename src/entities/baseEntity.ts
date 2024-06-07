@@ -4,6 +4,7 @@ export abstract class BaseEntity {
   @PrimaryKey()
   id!: number;
 
+  // @Property({ onCreate: () => new Date() })
   @Property()
   createdAt: Date & Opt = new Date();
 

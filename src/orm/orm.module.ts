@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { MikroOrmModule } from '@mikro-orm/nestjs';
 import { OrmConfigFactory } from './orm.config.factory';
+import { Category, Term, User } from '../entities';
 
 @Module({
   imports: [
@@ -11,7 +12,7 @@ import { OrmConfigFactory } from './orm.config.factory';
         new OrmConfigFactory(configService).buildConfig(),
     }),
     MikroOrmModule.forFeature({
-      entities: [],
+      entities: [Category, Term, User],
     }),
   ],
   exports: [MikroOrmModule],

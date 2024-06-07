@@ -1,6 +1,6 @@
 import { OrmModuleConfigProperties } from './orm.module.config.properties';
 import { Logger } from '@nestjs/common';
-import { Options } from '@mikro-orm/core';
+import { Options, UnderscoreNamingStrategy } from '@mikro-orm/core';
 import { TsMorphMetadataProvider } from '@mikro-orm/reflection';
 import { MariaDbDriver } from '@mikro-orm/mariadb';
 import { SqlHighlighter } from '@mikro-orm/sql-highlighter';
@@ -32,12 +32,14 @@ export class OrmConfigFactory {
         OrmModuleConfigProperties.ENV_DATABASE_PORT,
       ),
       forceUtcTimezone: true,
+      namingStrategy: UnderscoreNamingStrategy,
       metadataProvider: TsMorphMetadataProvider,
       highlighter: new SqlHighlighter(),
       debug:
         this.configService.get<string>(
           OrmModuleConfigProperties.ENV_DATABASE_DEBUG,
         ) === 'true',
+      synchronize: false,
       logger: logger.log.bind(logger),
     } as Options;
 
